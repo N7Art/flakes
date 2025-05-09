@@ -9,11 +9,7 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in
-    {
-
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs =
+      deps = 
           (with pkgs; [
             wayland-scanner
             wayland
@@ -32,7 +28,14 @@
             libXrandr
             libXrender
           ]);
+    in
+    {
+
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = deps;
 
       };
+
+      legasyPackages.${system}.raylibBuildInputs = deps;
     };
 }
