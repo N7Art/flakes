@@ -36,6 +36,6 @@
 
       };
 
-      legasyPackages.${system}.raylibBuildInputs = deps;
+      legacyPackages.${system}.raylibBuildInputs = deps;
     };
 }
