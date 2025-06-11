@@ -1,0 +1,41 @@
+{
+  description = "Lapis flake";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        luaPackages = pkgs.lua54Packages;
+
+        lapisPackages = import ./pkgs {
+          inherit
+            luaPackages
+            pkgs
+            ;
+        };
+      in
+      {
+        packages.defaul = lapisPackages.lapis;
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.luarocks-nix
+            lapisPackages.lapis
+            pkgs.openresty
+          ];
+
+        };
+      }
+    );
+}
