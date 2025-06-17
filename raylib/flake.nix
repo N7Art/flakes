@@ -36,6 +36,6 @@
 
       };
 
-      legacyPackages.${system}.raylibBuildInputs = deps;
+      raylibBuildInputs = deps;
     };
 }
