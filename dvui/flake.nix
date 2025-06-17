@@ -28,6 +28,8 @@
 
       };
 
+      packages.${system}.default = devShell;
+
       devShell = devShell;
     };
 }
