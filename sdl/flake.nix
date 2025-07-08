@@ -32,6 +32,7 @@
     in
     {
 
+packages.${system}.default = pkgs.hello;
       devShells.${system}.default = pkgs.mkShell {
         buildInputs = deps;
 
