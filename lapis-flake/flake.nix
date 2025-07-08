@@ -6,27 +6,29 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-    }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        luaPackages = pkgs.lua54Packages;
+        luaPackages = pkgs.lua51Packages;
 
         lapisPackages = import ./pkgs {
-          inherit
-            luaPackages
-            pkgs
-            ;
+          inherit (luaPackages)
+            buildLuarocksPackage
+            ansicolors
+            argparse
+            loadkit
+            lpeg
+            lua-cjson
+            luaossl
+            luasocket
+            luaOlder
+            luaAtLeast;
+          inherit (pkgs) fetchurl fetchFromGitHub;
         };
-      in
-      {
-        packages.defaul = lapisPackages.lapis;
+      in {
+        packages.lapis = lapisPackages.lapis;
+        packages.default = lapisPackages.lapis;
 
         devShells.default = pkgs.mkShell {
           buildInputs = [
@@ -34,8 +36,6 @@
             lapisPackages.lapis
             pkgs.openresty
           ];
-
         };
-      }
-    );
+      });
 }

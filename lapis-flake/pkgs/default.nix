@@ -1,18 +1,71 @@
-{ pkgs, luaPackages }:
+{
+  buildLuarocksPackage,
+  ansicolors,
+  argparse,
+  loadkit,
+  lpeg,
+  lua-cjson,
+  luaossl,
+  luasocket,
+
+  luaAtLeast,
+  luaOlder,
+  fetchFromGitHub,
+  fetchurl,
+}@inputs:
 let
-  date = import ./date.nix { inherit pkgs luaPackages; };
-  etlua = import ./etlua.nix { inherit pkgs luaPackages; };
-  pgmoon = import ./pgmoon.nix { inherit pkgs luaPackages; };
+
+  date = import ./date.nix {
+    inherit (inputs)
+      buildLuarocksPackage
+      luaAtLeast
+      luaOlder
+      fetchurl
+      fetchFromGitHub
+      ;
+  };
+
+  etlua = import ./etlua.nix {
+    inherit (inputs)
+      buildLuarocksPackage
+      luaOlder
+      fetchurl
+      fetchFromGitHub
+      ;
+  };
+  pgmoon = import ./pgmoon.nix {
+    inherit (inputs)
+      buildLuarocksPackage
+      lpeg
+      luaOlder
+      fetchurl
+      fetchFromGitHub
+      ;
+  };
+
   lapis = import ./lapis.nix {
-    inherit pkgs luaPackages;
-    inherit date etlua pgmoon;
+    inherit (inputs)
+      buildLuarocksPackage
+      ansicolors
+      argparse
+      loadkit
+      lpeg
+      lua-cjson
+      luaossl
+      luasocket
+      fetchurl
+      fetchFromGitHub
+      ;
+
+    etlua = etlua;
+    pgmoon = pgmoon;
+    date = date;
   };
 in
 {
   inherit
     lapis
-    date
     etlua
-    pgmoon
+    date
     ;
 }
