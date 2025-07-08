@@ -37,7 +37,7 @@
 
       };
 
-      dvuiDeps = deps;
+      sdl3Deps = deps;
     };
 
 
