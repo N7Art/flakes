@@ -14,19 +14,17 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      deps = raylib-flake.raylibBuildInputs;
+      deps = raylib-flake.raylibDeps;
       devShell = pkgs.mkShell {
-        buildInputs = deps;
+        buildInputs = deps ++ [pkgs.zig];
+        
 
       };
 
     in
     {
 
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = deps;
-
-      };
+      devShells.${system}.default = devShell;
 
       packages.${system}.default = devShell;
 

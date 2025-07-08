@@ -15,7 +15,6 @@
             wayland
             libxkbcommon
             libGLX
-            zig
           ])
           ++ (with pkgs.xorg; [
 
@@ -36,6 +35,6 @@
 
       };
 
-      raylibBuildInputs = deps;
+      raylibDeps = deps;
     };
 }
